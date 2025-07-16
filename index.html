@@ -87,7 +87,7 @@
 
         #landing h1 {
             font-size: 2.5rem;
-            color: var(--gold);
+            color: #634e0b;
             margin-bottom: 1.5rem;
             letter-spacing: 1px;
             font-weight: 400;
@@ -109,7 +109,7 @@
         .btn {
             padding: 0.8rem 2rem;
             font-size: 0.9rem;
-            border: 1px solid var(--gold);
+            border: 1px solid #634e0b;
             background: transparent;
             color: var(--light);
             cursor: pointer;
@@ -150,7 +150,7 @@
         }
 
         .verification-header h2 {
-            color: var(--gold);
+            color: #634e0b;
             font-size: 1.2rem;
             font-weight: 400;
             text-transform: uppercase;
@@ -192,7 +192,7 @@
 
         .option-btn:hover {
             background: rgba(212, 175, 55, 0.1);
-            border-color: var(--gold);
+            border-color: #634e0b;
         }
 
         .scanner-container {
@@ -203,14 +203,14 @@
         }
 
         .scanner-text {
-            color: var(--gold);
+            color: #634e0b;
             margin-bottom: 1rem;
             font-size: 0.9rem;
         }
 
         .scanner-bar {
             height: 2px;
-            background: linear-gradient(90deg, var(--dark), var(--gold), var(--dark));
+            background: linear-gradient(90deg, var(--dark), #634e0b, var(--dark));
             background-size: 200% 100%;
             animation: scan 2s linear infinite;
         }
@@ -232,7 +232,7 @@
 
         .result-title {
             font-size: 1.5rem;
-            color: var(--gold);
+            color: #634e0b;
             margin-bottom: 1rem;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -254,7 +254,7 @@
 
         .certificate-title {
             font-size: 1.2rem;
-            color: var(--gold);
+            color: #634e0b;
             margin-bottom: 1.5rem;
             border-bottom: 1px solid rgba(212, 175, 55, 0.3);
             padding-bottom: 0.5rem;
@@ -274,7 +274,7 @@
 
         .certificate-label {
             width: 150px;
-            color: var(--gold);
+            color: #634e0b;
             opacity: 0.8;
         }
 
@@ -368,13 +368,45 @@
                 margin-bottom: 1.5rem;
             }
         }
+
+                .logo-container {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.5rem;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            background-image: url('a.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .logo-link {
+            font-size: 0.8rem;
+            color: var(--light);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .logo-link:hover {
+            color: #634e0b;
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
     <div id="app">
         <!-- LOGO & LINKS -->
         <div class="logo-container">
-            <div class="logo">AGENT</div>
+            <div class="logo"></div>
             <a href="https://twitter.com/yourhandle" class="logo-link" target="_blank">Twitter</a>
             <a href="https://etherscan.io/yourcontract" class="logo-link" target="_blank">CA</a>
         </div>
@@ -543,12 +575,12 @@
         document.getElementById('haveProof').addEventListener('click', startVerification);
         document.getElementById('amGoy').addEventListener('click', () => {
             landingScreen.innerHTML = `
-                <h1 style="color: var(--gold);">BLESSINGS UPON YOU ANYWAY</h1>
+                <h1 style="color: #634e0b;">BLESSINGS UPON YOU ANYWAY</h1>
                 <p>This terminal will self-destruct in 5 seconds...</p>
             `;
             setTimeout(() => {
                 document.body.innerHTML = `
-                    <div style="display: flex; justify-content: center; align-items: center; height: 100vh; background: white; color: var(--gold);">
+                    <div style="display: flex; justify-content: center; align-items: center; height: 100vh; background: white; color: #634e0b;">
                         <h1>Connection terminated.</h1>
                     </div>
                 `;
@@ -624,7 +656,7 @@
             options.forEach(opt => {
                 opt.disabled = true;
                 if (parseInt(opt.textContent) === correct) {
-                    opt.style.borderColor = 'var(--gold)';
+                    opt.style.borderColor = '#634e0b';
                     opt.style.background = 'rgba(212, 175, 55, 0.1)';
                 }
             });
