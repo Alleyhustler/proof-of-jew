@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PROOF OF JEW • SACRED VERIFICATION MACHINE</title>
+    <style>
+        :root {
+            --gold: #D4AF37;
+            --dark: #FFFFFF; /* WHITE BACKGROUND */
+            --darker: #F5F5F5;
+            --light: #333333; /* DARK TEXT */
+            --red: #9C2B2E;
+            --terminal-green: #006B3C; /* DARKER GREEN FOR WHITE BG */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'IBM Plex Mono', monospace, 'Times New Roman', serif;
+        }
+
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+            line-height: 1.5;
+        }
+
+        #app {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        /* === LOGO & LINKS === */
+        .logo-container {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            text-align: right;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 0.5rem;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .logo-link {
+            font-size: 0.8rem;
+            color: var(--light);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        .logo-link:hover {
+            text-decoration: underline;
+        }
+
+        /* === LANDING SCREEN === */
+        #landing {
+            text-align: center;
+            max-width: 600px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 3rem;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+        }
+
+        #landing h1 {
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin-bottom: 1.5rem;
+            letter-spacing: 1px;
+            font-weight: 400;
+            text-transform: uppercase;
+        }
+
+        #landing p {
+            opacity: 0.7;
+            margin-bottom: 2.5rem;
+            font-size: 0.9rem;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 0.8rem 2rem;
+            font-size: 0.9rem;
+            border: 1px solid var(--gold);
+            background: transparent;
+            color: var(--light);
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn:hover {
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .btn-primary {
+            background: rgba(212, 175, 55, 0.2);
+        }
+
+        .btn-primary:hover {
+            background: rgba(212, 175, 55, 0.3);
+        }
+
+        /* === VERIFICATION SCREEN === */
+        #verification {
+            display: none;
+            width: 100%;
+            max-width: 700px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+        }
+
+        .verification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .verification-header h2 {
+            color: var(--gold);
+            font-size: 1.2rem;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .verification-progress {
+            color: var(--light);
+            opacity: 0.7;
+            font-size: 0.8rem;
+        }
+
+        .question-container {
+            margin-bottom: 2rem;
+        }
+
+        .question {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+        }
+
+        .option-btn {
+            padding: 0.8rem;
+            text-align: left;
+            background: rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            color: var(--light);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .option-btn:hover {
+            background: rgba(212, 175, 55, 0.1);
+            border-color: var(--gold);
+        }
+
+        .scanner-container {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            border: 1px dashed rgba(212, 175, 55, 0.3);
+            text-align: center;
+        }
+
+        .scanner-text {
+            color: var(--gold);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .scanner-bar {
+            height: 2px;
+            background: linear-gradient(90deg, var(--dark), var(--gold), var(--dark));
+            background-size: 200% 100%;
+            animation: scan 2s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* === RESULTS SCREEN === */
+        #results {
+            display: none;
+            max-width: 600px;
+            text-align: center;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+        }
+
+        .result-title {
+            font-size: 1.5rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .result-subtitle {
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+            opacity: 0.7;
+        }
+
+        .certificate {
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 2rem;
+            margin: 2rem 0;
+            background: rgba(255, 255, 255, 0.95);
+            text-align: left;
+        }
+
+        .certificate-title {
+            font-size: 1.2rem;
+            color: var(--gold);
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .certificate-details {
+            margin: 1.5rem 0;
+        }
+
+        .certificate-row {
+            display: flex;
+            margin-bottom: 0.8rem;
+            font-size: 0.9rem;
+        }
+
+        .certificate-label {
+            width: 150px;
+            color: var(--gold);
+            opacity: 0.8;
+        }
+
+        .certificate-value {
+            flex: 1;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.8rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        /* === TERMINAL SCREEN === */
+        #terminal {
+            display: none;
+            width: 100%;
+            max-width: 700px;
+            border: 1px solid rgba(0, 107, 60, 0.3);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1.5rem;
+            font-family: 'IBM Plex Mono', monospace;
+        }
+
+        .terminal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            color: var(--terminal-green);
+            border-bottom: 1px solid rgba(0, 107, 60, 0.3);
+            padding-bottom: 0.5rem;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        .terminal-body {
+            height: 300px;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: var(--terminal-green);
+        }
+
+        .terminal-prompt {
+            display: flex;
+            align-items: center;
+            color: var(--terminal-green);
+        }
+
+        .terminal-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--terminal-green);
+            font-family: 'IBM Plex Mono', monospace;
+            padding: 0.3rem;
+            outline: none;
+            caret-color: var(--terminal-green);
+        }
+
+        .terminal-cursor {
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 768px) {
+            #landing, #verification, #results, #terminal {
+                padding: 1.5rem;
+                width: 95%;
+            }
+
+            .options {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .logo-container {
+                position: static;
+                text-align: center;
+                margin-bottom: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- LOGO & LINKS -->
+        <div class="logo-container">
+            <div class="logo">AGENT</div>
+            <a href="https://twitter.com/yourhandle" class="logo-link" target="_blank">Twitter</a>
+            <a href="https://etherscan.io/yourcontract" class="logo-link" target="_blank">CA</a>
+        </div>
+
+        <!-- LANDING SCREEN -->
+        <div id="landing">
+            <h1>PROVE YOURSELF</h1>
+            <p>SACRED VERIFICATION MACHINE v3.14</p>
+            <div class="button-group">
+                <button id="haveProof" class="btn btn-primary">BEGIN VERIFICATION</button>
+                <button id="amGoy" class="btn">I AM GOY</button>
+            </div>
+        </div>
+
+        <!-- VERIFICATION SCREEN -->
+        <div id="verification">
+            <div class="verification-header">
+                <h2>VERIFICATION PROCESS</h2>
+                <div class="verification-progress">Question <span id="currentQuestion">1</span>/3</div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question" id="questionText">You raise 800m in your platform..</div>
+                <div class="options" id="optionsContainer"></div>
+            </div>
+            
+            <div class="scanner-container" id="scannerSection" style="display: none;">
+                <div class="scanner-text">ANALYZING TRIBAL CONNECTION...</div>
+                <div class="scanner-bar"></div>
+                <div class="scanner-text" id="scanResult"></div>
+            </div>
+            
+            <div class="button-group">
+                <button id="nextQuestion" class="btn btn-primary" style="display: none;">CONTINUE</button>
+            </div>
+        </div>
+
+        <!-- RESULTS SCREEN -->
+        <div id="results">
+            <h1 class="result-title" id="resultTitle">VERIFICATION COMPLETE</h1>
+            <p class="result-subtitle" id="resultSubtitle">You have been verified: Level 2 Ashkenazi</p>
+            
+            <div class="certificate">
+                <div class="certificate-title">CERTIFICATE OF JEWTHENTICITY</div>
+                <div class="certificate-details">
+                    <div class="certificate-row">
+                        <div class="certificate-label">STATUS:</div>
+                        <div class="certificate-value" id="certStatus">Verified</div>
+                    </div>
+                    <div class="certificate-row">
+                        <div class="certificate-label">MEME ALIGNMENT:</div>
+                        <div class="certificate-value" id="certMeme">Degen Yeshiva Tier</div>
+                    </div>
+                    <div class="certificate-row">
+                        <div class="certificate-label">SPIRITUAL HASH:</div>
+                        <div class="certificate-value" id="certHash">0x8badf00d...</div>
+                    </div>
+                    <div class="certificate-row">
+                        <div class="certificate-label">CODENAME:</div>
+                        <div class="certificate-value" id="certCodename">Rabbi420</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <button id="downloadCert" class="btn btn-primary">DOWNLOAD</button>
+                <button id="mintNFT" class="btn">MINT</button>
+                <button id="accessTerminal" class="btn">TERMINAL</button>
+            </div>
+        </div>
+
+        <!-- TERMINAL SCREEN -->
+        <div id="terminal">
+            <div class="terminal-header">
+                <div>SACRED TERMINAL v1.0.3</div>
+                <div>PROOF OF JEW ORACLE</div>
+            </div>
+            <div class="terminal-body" id="terminalOutput">
+                > Initializing sacred connection...<br>
+                > Loading esoteric knowledge...<br>
+                > Syncing with chainlink davening oracle...<br><br>
+                Type 'help' for available commands.<br><br>
+            </div>
+            <div class="terminal-prompt">
+                <span>></span>
+                <input type="text" class="terminal-input" id="terminalInput" autocomplete="off">
+                <span class="terminal-cursor">_</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Updated Questions
+        const questions = [
+            {
+                question: "You raise 800m in your platform..",
+                options: [
+                    "Run with the money",
+                    "Act like you're doing something but just add to the bag",
+                    "Give airdrop for community",
+                    "Nothing"
+                ],
+                correct: 1 // Correct answer: "Act like you're doing something..."
+            },
+            {
+                question: "You see a $20 bill on the ground. What do you do?",
+                options: [
+                    "Pick it up and yell 'Who dropped this?'",
+                    "Pick it up, pocket it, and walk away",
+                    "Pick it up, look around nervously, and say 'Eh, G-d wanted me to have it.'",
+                    "Leave it. Might be cursed."
+                ],
+                correct: 2 // Correct answer: "Pick it up, look around nervously..."
+            },
+            {
+                question: "The waiter brings the wrong order but it's more expensive. You...",
+                options: [
+                    "Politely correct them",
+                    "Eat it quietly",
+                    "Say nothing, eat it, and then complain about it for 3 days.",
+                    "Call your mother mid-meal to discuss"
+                ],
+                correct: 2 // Correct answer: "Say nothing, eat it, then complain..."
+            }
+        ];
+
+        // Terminal commands and responses
+        const terminalCommands = {
+            "help": "Available commands: bless, convert, mint, proof, status, clear",
+            "bless wallet": "Invoking rabbinic smart contract... Wallet blessed with 18% extra chutzpah.",
+            "convert goy": "Processing... Error: Insufficient schmaltz. Try again after eating kugel.",
+            "mint menorah": "Minting 8/9 candles... Gas fee: 1 brisket. Transaction pending.",
+            "proof": "> proof()<br>RabbiNode: ✓✓✓<br>Verification hash: 0x8badf00d...<br>Status: Certified Kibbitzer",
+            "status": "Current verification level: 2 Ashkenazi<br>Meme alignment: Degen Yeshiva<br>Next upgrade available: After havdalah",
+            "clear": ""
+        };
+
+        // App state
+        let currentQuestion = 0;
+        let score = 0;
+        let verificationLevel = 1;
+        const codenames = ["Rabbi420", "BagelWarlord", "SchmearGeneral", "DreidelDegen", "MitzvahMaxi"];
+        const memeAlignments = ["Goy Lite", "Degen Yeshiva Tier", "Full Kibbitzer", "Ultra Chutzpah"];
+
+        // DOM elements
+        const landingScreen = document.getElementById('landing');
+        const verificationScreen = document.getElementById('verification');
+        const resultsScreen = document.getElementById('results');
+        const terminalScreen = document.getElementById('terminal');
+        const questionText = document.getElementById('questionText');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const currentQuestionDisplay = document.getElementById('currentQuestion');
+        const nextQuestionBtn = document.getElementById('nextQuestion');
+        const scannerSection = document.getElementById('scannerSection');
+        const scanResult = document.getElementById('scanResult');
+        const resultTitle = document.getElementById('resultTitle');
+        const resultSubtitle = document.getElementById('resultSubtitle');
+        const certStatus = document.getElementById('certStatus');
+        const certMeme = document.getElementById('certMeme');
+        const certHash = document.getElementById('certHash');
+        const certCodename = document.getElementById('certCodename');
+        const terminalOutput = document.getElementById('terminalOutput');
+        const terminalInput = document.getElementById('terminalInput');
+
+        // Event listeners
+        document.getElementById('haveProof').addEventListener('click', startVerification);
+        document.getElementById('amGoy').addEventListener('click', () => {
+            landingScreen.innerHTML = `
+                <h1 style="color: var(--gold);">BLESSINGS UPON YOU ANYWAY</h1>
+                <p>This terminal will self-destruct in 5 seconds...</p>
+            `;
+            setTimeout(() => {
+                document.body.innerHTML = `
+                    <div style="display: flex; justify-content: center; align-items: center; height: 100vh; background: white; color: var(--gold);">
+                        <h1>Connection terminated.</h1>
+                    </div>
+                `;
+            }, 5000);
+        });
+
+        document.getElementById('accessTerminal').addEventListener('click', () => {
+            resultsScreen.style.display = 'none';
+            terminalScreen.style.display = 'block';
+            terminalInput.focus();
+        });
+
+        // Terminal input handler
+        terminalInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const command = terminalInput.value.toLowerCase();
+                terminalInput.value = '';
+                
+                // Add the command to output
+                terminalOutput.innerHTML += `> ${command}<br>`;
+                
+                // Process command
+                if (command === 'clear') {
+                    terminalOutput.innerHTML = '';
+                } else if (command === 'proof') {
+                    terminalOutput.innerHTML += terminalCommands['proof'].replace(/\n/g, '<br>') + '<br><br>';
+                } else if (terminalCommands[command]) {
+                    terminalOutput.innerHTML += terminalCommands[command] + '<br><br>';
+                } else {
+                    terminalOutput.innerHTML += `Command not recognized: ${command}<br>Type 'help' for available commands.<br><br>`;
+                }
+                
+                // Scroll to bottom
+                terminalOutput.scrollTop = terminalOutput.scrollHeight;
+            }
+        });
+
+        // Start verification process
+        function startVerification() {
+            landingScreen.style.display = 'none';
+            verificationScreen.style.display = 'block';
+            loadQuestion(currentQuestion);
+        }
+
+        // Load question
+        function loadQuestion(index) {
+            if (index >= questions.length) {
+                completeVerification();
+                return;
+            }
+            
+            const q = questions[index];
+            questionText.textContent = q.question;
+            currentQuestionDisplay.textContent = index + 1;
+            
+            optionsContainer.innerHTML = '';
+            q.options.forEach((option, i) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.textContent = option;
+                btn.addEventListener('click', () => selectAnswer(i, q.correct));
+                optionsContainer.appendChild(btn);
+            });
+            
+            nextQuestionBtn.style.display = 'none';
+            scannerSection.style.display = 'none';
+        }
+
+        // Handle answer selection
+        function selectAnswer(selected, correct) {
+            // Disable all options
+            const options = document.querySelectorAll('.option-btn');
+            options.forEach(opt => {
+                opt.disabled = true;
+                if (parseInt(opt.textContent) === correct) {
+                    opt.style.borderColor = 'var(--gold)';
+                    opt.style.background = 'rgba(212, 175, 55, 0.1)';
+                }
+            });
+            
+            // Check if correct
+            if (selected === correct) {
+                score++;
+            }
+            
+            // Show scanner animation
+            scannerSection.style.display = 'block';
+            scanResult.textContent = 'Analyzing tribal connections...';
+            
+            // Simulate scanning delay
+            setTimeout(() => {
+                const scanPhrases = [
+                    "Detecting bagel DNA...",
+                    "Measuring chutzpah levels...",
+                    "Verifying bubbe's recipes...",
+                    "Cross-referencing Talmudic texts..."
+                ];
+                scanResult.textContent = scanPhrases[Math.floor(Math.random() * scanPhrases.length)];
+                
+                setTimeout(() => {
+                    scanResult.textContent = "Partial analysis complete...";
+                    nextQuestionBtn.style.display = 'block';
+                    nextQuestionBtn.textContent = currentQuestion < questions.length - 1 ? 'CONTINUE' : 'COMPLETE';
+                    
+                    nextQuestionBtn.onclick = () => {
+                        currentQuestion++;
+                        loadQuestion(currentQuestion);
+                    };
+                }, 1500);
+            }, 1500);
+        }
+
+        // Complete verification
+        function completeVerification() {
+            verificationScreen.style.display = 'none';
+            resultsScreen.style.display = 'block';
+            
+            // Calculate results
+            verificationLevel = Math.floor((score / questions.length) * 3) + 1;
+            if (verificationLevel > 4) verificationLevel = 4;
+            
+            // Set result text
+            if (verificationLevel >= 3) {
+                resultTitle.textContent = "VERIFICATION SUCCESSFUL";
+                resultSubtitle.textContent = `You have been verified: Level ${verificationLevel} Ashkenazi`;
+                certStatus.textContent = "Verified";
+            } else {
+                resultTitle.textContent = "VERIFICATION INCOMPLETE";
+                resultSubtitle.textContent = "Insufficient chutzpah. Try again after Shabbat.";
+                certStatus.textContent = "Partial Verification";
+            }
+            
+            // Set certificate details
+            certMeme.textContent = memeAlignments[verificationLevel - 1];
+            certHash.textContent = `0x${Math.random().toString(16).substr(2, 8)}...`;
+            certCodename.textContent = codenames[Math.floor(Math.random() * codenames.length)];
+        }
+    </script>
+</body>
+</html>
